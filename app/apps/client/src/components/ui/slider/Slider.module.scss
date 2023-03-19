@@ -1,0 +1,19 @@
+.wrapper {
+   height: 500px;
+
+   span {
+      width: 10px;
+      height: 10px;
+   }
+
+   .slide {
+      width: 100% !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+         width: 100%;
+      }
+   }
+}
