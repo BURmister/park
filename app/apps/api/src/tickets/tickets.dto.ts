@@ -15,6 +15,10 @@ export class TicketsDto {
 
   @IsString()
   @IsOptional()
+  time: string;
+
+  @IsString()
+  @IsOptional()
   buyerName: string;
 
   @IsString()

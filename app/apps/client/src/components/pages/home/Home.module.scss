@@ -101,7 +101,7 @@
 
                button {
                   width: 90%;
-                  height: 48px;
+                  height: 46px;
 
                   border: 2px solid rgba(89, 160, 71, 0);
                   background-color: rgb(89, 160, 71);
@@ -199,6 +199,7 @@
          row-gap: 25px;
 
          a {
+            position: relative;
             padding: 25px;
             height: 200px;
 
@@ -207,17 +208,94 @@
             align-items: center;
 
             font-size: 20px;
+            font-weight: 600;
             text-align: center;
             color: rgb(230, 230, 230);
-            background-color: rgb(89, 160, 71);
+
             border: 2px solid rgba(89, 160, 71, 0);
 
+            z-index: 1;
             transition: all 0.2s ease-in-out;
+
+            &:nth-child(1) {
+               color: rgb(30, 30, 30);
+
+               &:before {
+                  position: absolute;
+                  content: '';
+                  top: 0;
+                  left: 0;
+
+                  width: 100%;
+                  height: 100%;
+
+                  background-repeat: no-repeat;
+                  background-image: url('https://shkola-dubovoe.ru/wp-content/uploads/2022/05/pushkart.jpg');
+                  background-position: center center;
+                  background-size: cover;
+                  filter: blur(3px);
+                  -webkit-filter: blur(3px);
+
+                  z-index: -1;
+                  transition: all 0.2s ease-in-out;
+               }
+            }
+
+            &:nth-child(2) {
+               &:before {
+                  position: absolute;
+                  content: '';
+                  top: 0;
+                  left: 0;
+
+                  width: 100%;
+                  height: 100%;
+
+                  background-repeat: no-repeat;
+                  background-image: url('https://www.zaryadyepark.ru/local/templates/.default/markup_zaryadye/new-markup/dest/assets/images/header-botanic__bg-main.jpg');
+                  background-position: center center;
+                  background-size: cover;
+                  filter: blur(3px);
+                  -webkit-filter: blur(3px);
+
+                  z-index: -1;
+                  transition: all 0.2s ease-in-out;
+               }
+            }
+
+            &:nth-child(3) {
+               color: rgb(89, 160, 71);
+
+               &:before {
+                  position: absolute;
+                  content: '';
+                  top: 0;
+                  left: 0;
+
+                  width: 100%;
+                  height: 100%;
+
+                  background-repeat: no-repeat;
+                  background-image: url('https://www.zaryadyepark.ru/upload/medialibrary/00d/IMG_6841.JPG');
+                  background-position: center center;
+                  background-size: cover;
+                  filter: blur(3px);
+                  -webkit-filter: blur(3px);
+
+                  z-index: -1;
+                  transition: all 0.2s ease-in-out;
+               }
+            }
 
             &:hover {
                color: rgba(89, 160, 71, 1);
                background-color: inherit;
+               background-image: filter();
                border: 2px solid rgba(89, 160, 71, 1);
+
+               &:before {
+                  opacity: 0;
+               }
             }
          }
       }

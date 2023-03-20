@@ -76,6 +76,14 @@ export class ProductsService {
       product.free = dto.free;
     }
 
+    if (dto.date) {
+      product.date = dto.date;
+    }
+
+    if (dto.time) {
+      product.time = dto.time;
+    }
+
     if (dto.tickets) {
       product.tickets = dto.tickets;
     }
