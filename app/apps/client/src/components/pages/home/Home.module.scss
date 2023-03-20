@@ -43,18 +43,20 @@
             align-items: center;
             gap: 5px;
 
-            img {
+            > img {
                transition: all 0.2s ease-in-out;
             }
 
             &:hover {
-               img {
+               > img {
                   transform: translateX(10px);
                }
             }
          }
 
          ul {
+            position: relative;
+
             margin: 0;
             margin-top: 25px;
             padding: 0;
@@ -137,12 +139,12 @@
             align-items: center;
             gap: 5px;
 
-            img {
+            > img {
                transition: all 0.2s ease-in-out;
             }
 
             &:hover {
-               img {
+               > img {
                   transform: translateX(10px);
                }
             }

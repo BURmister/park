@@ -1,15 +1,20 @@
 import { FC, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import Slider from '../../ui/slider/Slider';
+import useOutside from '../../../hooks/useOutside';
+import Modal from '../../ui/modal-pay/Modal';
+
 import styles from './Home.module.scss';
 import next from '../../../assets/next.svg';
-import Slider from '../../ui/slider/Slider';
 
 const Home: FC = () => {
    useEffect(() => {
       window.scrollTo(0, 0);
       document.title = 'Парк';
    }, []);
+
+   const { ref, isShow, setIsShow } = useOutside(false);
 
    return (
       <div className={styles.wrapper}>
@@ -52,7 +57,7 @@ const Home: FC = () => {
                      Посещение - <span>Бесплатное</span>
                   </h4>
                </li>
-               <li>
+               <li ref={ref}>
                   <h3>Название / Заголовок события</h3>
                   <p>
                      какой-то текст события, который может быть как коротким, так и длинным. Хмм... Интересно, а как ограничивать текст при помощи JS
@@ -65,7 +70,10 @@ const Home: FC = () => {
                   <h4>
                      Посещение - <span>Платное</span>
                   </h4>
-                  <button type="button">Билеты</button>
+                  <button type="button" onClick={() => setIsShow(!isShow)}>
+                     Билеты
+                  </button>
+                  <Modal name={'Концерт Нервы в нашем Парке'} open={isShow} onClickOpen={() => setIsShow(!isShow)} ref={ref} />
                </li>
             </ul>
          </section>

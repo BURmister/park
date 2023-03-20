@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 
 import styles from './Footer.module.scss'
 
@@ -32,9 +33,9 @@ const Footer: FC = () => {
                <span>2023 / Все права защищены</span>
                <ul>
                   <li>
-                     <a href="/" target="_blank">
-                        Вопросы и ответы
-                     </a>
+                     <Link to="login">
+                        Администратору
+                     </Link>
                   </li>
                   <li>
                      <a href="/" target="_blank">
