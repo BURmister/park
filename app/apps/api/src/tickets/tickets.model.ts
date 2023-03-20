@@ -15,6 +15,9 @@ export class TicketsModel extends TimeStamps {
   date: string;
 
   @prop()
+  time: string;
+
+  @prop()
   buyerName: string;
 
   @prop()

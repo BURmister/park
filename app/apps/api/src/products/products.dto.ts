@@ -11,6 +11,10 @@ export class ProductsDto {
 
   @IsString()
   @IsOptional()
+  time: string;
+
+  @IsString()
+  @IsOptional()
   description: string;
 
   @IsString()

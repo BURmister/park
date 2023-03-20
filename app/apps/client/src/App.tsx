@@ -12,6 +12,11 @@ import Footer from './components/layouts/footer/Footer';
 import Home from './components/pages/home/Home';
 import About from './components/pages/about/About';
 import History from './components/pages/history/History';
+import News from './components/pages/news/News';
+import Events from './components/pages/events/Events';
+import Pay from './components/pages/info-pages/pay/Pay';
+import Garden from './components/pages/info-pages/garden/Garden';
+import Excursions from './components/pages/info-pages/excursions/Excursions';
 
 import './App.css';
 
@@ -53,8 +58,13 @@ function App() {
             <main>
                <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
+                  <Route path="/events" element={<Events />} />
+                  <Route path="/news" element={<News />} />
                   <Route path="/history" element={<History />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/info/pay" element={<Pay />} />
+                  <Route path="/info/garden" element={<Garden />} />
+                  <Route path="/info/excursions" element={<Excursions />} />
                   <Route path="*" element={<h1 style={{ textAlign: 'center', paddingTop: '100px', color: 'black' }}>Страница не найдена</h1>} />
                </Routes>
             </main>
