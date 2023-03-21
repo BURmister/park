@@ -19,14 +19,13 @@ import { Auth } from '../auth/guard/jwt.guard';
 import { NewsDto } from './news.dto';
 import { NewsService } from './news.service';
 
-@Auth()
 @Controller('news')
 export class NewsController {
   constructor(private newsService: NewsService) {}
 
   @Get('/all')
-  getAll(@Query('searchTerm') searchTerm?: string | Types.ObjectId) {
-    return this.newsService.getAll(searchTerm);
+  getAll(@Query('term') term?: string) {
+    return this.newsService.getAll(term);
   }
 
   @Get(':_id')
@@ -34,17 +33,20 @@ export class NewsController {
     return this.newsService.getById(_id);
   }
 
+  @Auth()
   @Post('/add')
   addOne(@Body() dto: NewsDto) {
     return this.newsService.addOne(dto);
   }
 
+  @Auth()
   @Put('/edit/:_id')
   @HttpCode(200)
   edit(@Param('_id') _id: Types.ObjectId, @Body() dto: NewsDto) {
     return this.newsService.editOne(_id, dto);
   }
 
+  @Auth()
   @Put('/delete/:_id')
   delete(@Param('_id') _id: Types.ObjectId) {
     return this.newsService.deleteOne(_id);

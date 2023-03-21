@@ -19,9 +19,11 @@ export class ProductsDto {
 
   @IsString()
   @IsOptional()
+  price: string;
+
+  @IsOptional()
   free: boolean;
 
-  @IsString()
   @IsOptional()
   tickets: number;
 }

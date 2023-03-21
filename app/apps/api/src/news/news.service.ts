@@ -17,33 +17,16 @@ export class NewsService {
     private readonly NewsModel: ModelType<NewsModel>,
   ) {}
 
-  async getAll(searchTerm?: string | Types.ObjectId) {
-    if (searchTerm) {
-      if (isValidObjectId(searchTerm)) {
-        return this.NewsModel.find({
-          $or: [
-            {
-              _id: searchTerm,
-            },
-          ],
-        }).exec();
-      } else {
-        return this.NewsModel.find({
-          $or: [
-            {
-              name: new RegExp(String(searchTerm), 'i'),
-            },
-            {
-              category: new RegExp(String(searchTerm), 'i'),
-            },
-            {
-              producer: new RegExp(String(searchTerm), 'i'),
-            },
-          ],
-        }).exec();
-      }
+  async getAll(term?: string) {
+    if (term) {
+      const product = await this.NewsModel.find()
+        .sort({ createdAt: -1 })
+        .limit(Number(term))
+        .exec();
+      return product;
     }
-    const product = await this.NewsModel.find().exec();
+
+    const product = await this.NewsModel.find().sort({ createdAt: -1 }).exec();
     return product;
   }
 

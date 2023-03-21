@@ -5,13 +5,25 @@ import Slider from '../../ui/slider/Slider';
 import useOutside from '../../../hooks/useOutside';
 import Modal from '../../ui/modal-pay/Modal';
 
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { fetchNews, getNews } from '../../../redux/slices/news/news';
+import { fetchProducts, getProducts } from '../../../redux/slices/products/products.slice';
+
 import styles from './Home.module.scss';
 import next from '../../../assets/next.svg';
 
+const ARTICLES_LIMIT_ON_PAGE = 3;
+
 const Home: FC = () => {
+   const news = useAppSelector(getNews);
+   const products = useAppSelector(getProducts);
+   const dispatch = useAppDispatch();
+
    useEffect(() => {
       window.scrollTo(0, 0);
       document.title = 'Парк';
+      dispatch(fetchProducts(ARTICLES_LIMIT_ON_PAGE));
+      dispatch(fetchNews(ARTICLES_LIMIT_ON_PAGE));
    }, []);
 
    const { ref, isShow, setIsShow } = useOutside(false);
@@ -29,52 +41,45 @@ const Home: FC = () => {
                <img src={next} />
             </Link>
             <ul>
-               <li>
-                  <h3>Название / Заголовок события</h3>
-                  <p>
-                     какой-то текст события, который может быть как коротким, так и длинным. Хмм... Интересно, а как ограничивать текст при помощи JS
-                     и ставить 3 точки
-                  </p>
-                  <span>
-                     Дата: 23.04.2023 <br />
-                     Время: 11:30
-                  </span>
-                  <h4>
-                     Посещение - <span>Бесплатное</span>
-                  </h4>
-               </li>
-               <li>
-                  <h3>Название / Заголовок события</h3>
-                  <p>
-                     какой-то текст события, который может быть как коротким, так и длинным. Хмм... Интересно, а как ограничивать текст при помощи JS
-                     и ставить 3 точки
-                  </p>
-                  <span>
-                     Дата: 23.04.2023 <br />
-                     Время: 11:30
-                  </span>
-                  <h4>
-                     Посещение - <span>Бесплатное</span>
-                  </h4>
-               </li>
-               <li ref={ref}>
-                  <h3>Название / Заголовок события</h3>
-                  <p>
-                     какой-то текст события, который может быть как коротким, так и длинным. Хмм... Интересно, а как ограничивать текст при помощи JS
-                     и ставить 3 точки
-                  </p>
-                  <span>
-                     Дата: 23.04.2023 <br />
-                     Время: 11:30
-                  </span>
-                  <h4>
-                     Посещение - <span>Платное</span>
-                  </h4>
-                  <button type="button" onClick={() => setIsShow(!isShow)}>
-                     Билеты
-                  </button>
-                  <Modal name={'Концерт Нервы в нашем Парке'} open={isShow} onClickOpen={() => setIsShow(!isShow)} ref={ref} />
-               </li>
+               {products.length !== 0 ? (
+                  products.map((item, index) => (
+                     <li key={index}>
+                        <h3>{item.name}</h3>
+                        <p>{item.description}</p>
+                        <span>
+                           Дата проведения: {item.date}
+                           <br />
+                           Время: {item.time}
+                        </span>
+                        {item.free ? null : (
+                           <span ref={ref}>
+                              <button type="button" onClick={() => setIsShow(!isShow)}>
+                                 Билеты
+                              </button>
+                              <Modal
+                                 name={item.name}
+                                 date={item.date}
+                                 time={item.time}
+                                 price={item.price}
+                                 open={isShow}
+                                 onClickOpen={() => setIsShow(!isShow)}
+                                 ref={ref}
+                              />
+                           </span>
+                        )}
+                        <h4>
+                           Посещение - <span>{item.free ? 'Бесплатное' : 'Платное'}</span>
+                        </h4>
+                     </li>
+                  ))
+               ) : (
+                  <div>
+                     <h3>
+                        Пока событий нет.
+                        <br /> Как появятся - сразу расскажем!
+                     </h3>
+                  </div>
+               )}
             </ul>
          </section>
          <section>
@@ -83,30 +88,21 @@ const Home: FC = () => {
                <img src={next} />
             </Link>
             <ul>
-               <li>
-                  <h3>Название / Заголовок события</h3>
-                  <p>
-                     какой-то текст события, который может быть как коротким, так и длинным. Хмм... Интересно, а как ограничивать текст при помощи JS
-                     и ставить 3 точки
-                  </p>
-                  <span>23.04.2023</span>
-               </li>
-               <li>
-                  <h3>Название / Заголовок события</h3>
-                  <p>
-                     какой-то текст события, который может быть как коротким, так и длинным. Хмм... Интересно, а как ограничивать текст при помощи JS
-                     и ставить 3 точки
-                  </p>
-                  <span>23.04.2023</span>
-               </li>
-               <li>
-                  <h3>Название / Заголовок события</h3>
-                  <p>
-                     какой-то текст события, который может быть как коротким, так и длинным. Хмм... Интересно, а как ограничивать текст при помощи JS
-                     и ставить 3 точки
-                  </p>
-                  <span>23.04.2023</span>
-               </li>
+               {news.length !== 0 ? (
+                  news.map((item, index) => (
+                     <li key={index}>
+                        <h3>{item.name}</h3>
+                        <span>{item.date}</span>
+                     </li>
+                  ))
+               ) : (
+                  <div>
+                     <h3>
+                        Пока новостей нет.
+                        <br /> Как появятся - сразу расскажем!
+                     </h3>
+                  </div>
+               )}
             </ul>
          </section>
          <section>

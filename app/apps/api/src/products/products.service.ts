@@ -18,33 +18,18 @@ export class ProductsService {
     private readonly ProductsModel: ModelType<ProductsModel>,
   ) {}
 
-  async getAll(searchTerm?: string | Types.ObjectId) {
-    if (searchTerm) {
-      if (isValidObjectId(searchTerm)) {
-        return this.ProductsModel.find({
-          $or: [
-            {
-              _id: searchTerm,
-            },
-          ],
-        }).exec();
-      } else {
-        return this.ProductsModel.find({
-          $or: [
-            {
-              name: new RegExp(String(searchTerm), 'i'),
-            },
-            {
-              category: new RegExp(String(searchTerm), 'i'),
-            },
-            {
-              producer: new RegExp(String(searchTerm), 'i'),
-            },
-          ],
-        }).exec();
-      }
+  async getAll(term?: string | Types.ObjectId) {
+    if (term) {
+      const product = await this.ProductsModel.find()
+        .sort({ createdAt: -1 })
+        .limit(Number(term))
+        .exec();
+      return product;
     }
-    const product = await this.ProductsModel.find().exec();
+
+    const product = await this.ProductsModel.find()
+      .sort({ createdAt: -1 })
+      .exec();
     return product;
   }
 
@@ -88,6 +73,10 @@ export class ProductsService {
       product.tickets = dto.tickets;
     }
 
+    if (dto.price) {
+      product.price = dto.price;
+    }
+
     await product.save();
     return product._id;
   }
@@ -96,19 +85,5 @@ export class ProductsService {
     const product = await this.getById(_id);
     await product.deleteOne();
     return product.name;
-  }
-
-  async minus(_id: Types.ObjectId) {
-    const product = await this.getById(_id);
-    product.tickets = product.tickets - 1;
-    await product.save();
-    return { _id: product._id, name: product.name };
-  }
-
-  async plus(_id: Types.ObjectId) {
-    const product = await this.getById(_id);
-    product.tickets = product.tickets + 1;
-    await product.save();
-    return { _id: product._id, name: product.name };
   }
 }

@@ -84,18 +84,4 @@ export class TicketsService {
     await product.deleteOne();
     return product.name;
   }
-
-  async minus(_id: Types.ObjectId) {
-    const product = await this.getById(_id);
-    product.amount = product.amount - 1;
-    await product.save();
-    return { _id: product._id, name: product.name };
-  }
-
-  async plus(_id: Types.ObjectId) {
-    const product = await this.getById(_id);
-    product.amount = product.amount + 1;
-    await product.save();
-    return { _id: product._id, name: product.name };
-  }
 }

@@ -3,18 +3,9 @@ import axios from 'axios';
 import { RootState } from '../../store';
 import { product } from '../../types/product.types';
 
-type args = {
-   searchTerm?: string;
-   token: string;
-};
-
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async (args: args) => {
-   const instance = axios.create({
-      headers: {
-         Authorization: 'Bearer ' + args.token,
-      },
-   });
-   const { data } = await instance.get(`/api/products/all${args.searchTerm ? `?searchTerm=${args.searchTerm}` : ''}`);
+export const fetchProducts = createAsyncThunk('products/fetchProducts', async (term?: number) => {
+   const instance = axios.create({});
+   const { data } = await instance.get(`/api/products/all${term ? `?term=${term}` : ''}`);
    return data;
 });
 
@@ -37,26 +28,6 @@ export const productsSlice = createSlice({
       },
       filterProducts: (state, action: PayloadAction<string>) => {
          state.products = state.products.filter((product) => product._id !== action.payload);
-      },
-      // changeAmount: (state, action: PayloadAction<{ _id: string; state: 'plus' | 'minus' }>) => {
-      //    const product = state.products.find((product) => product._id === action.payload._id);
-      //    if (product !== undefined) {
-      //       product.amount + 1;
-      //       state.products = state.products.map((item) => (item._id !== product._id ? item : product));
-      //    }
-      // },
-      changeAmount: (state, action: PayloadAction<{ _id: string; state: 'plus' | 'minus' }>) => {
-         const product = state.products.find((item) => (item._id = action.payload._id));
-         const string = action.payload.state;
-         if (product) {
-            if (string === 'plus') {
-               product.amount = product.amount + 1;
-            } else {
-               product.amount = product.amount - 1;
-            }
-            const index = state.products.findIndex((item) => item === product);
-            state.products[index] = product;
-         }
       },
    },
    extraReducers: (builder) => {
@@ -81,6 +52,5 @@ export const productsStatus = (state: RootState) => state.products.status;
 
 export const { updateStatus } = productsSlice.actions;
 export const { filterProducts } = productsSlice.actions;
-export const { changeAmount } = productsSlice.actions;
 
 export default productsSlice.reducer;

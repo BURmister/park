@@ -5,6 +5,8 @@ import Modal from '../../../ui/modal-pay/Modal';
 
 import styles from './Excursions.module.scss';
 
+const WALK_EXCURSION_PRICE = '350'
+
 const Excursions: FC = () => {
    useEffect(() => {
       window.scrollTo(0, 0);
@@ -26,13 +28,21 @@ const Excursions: FC = () => {
                <span>
                   Продолжительность: 1 час
                   <br />
-                  Стоимость: 350 ₽
+                  Стоимость: {WALK_EXCURSION_PRICE} ₽
                </span>
                <div ref={ref}>
                   <button type="button" onClick={() => setIsShow(!isShow)}>
                      Купить билет
                   </button>
-                  <Modal name={'Концерт Нервы в нашем Парке'} open={isShow} onClickOpen={() => setIsShow(!isShow)} ref={ref} />
+                  <Modal
+                     name={'Пешия экскурсия по Парку'}
+                     date={false}
+                     time={false}
+                     price={WALK_EXCURSION_PRICE}
+                     open={isShow}
+                     onClickOpen={() => setIsShow(!isShow)}
+                     ref={ref}
+                  />
                </div>
             </section>
          </div>

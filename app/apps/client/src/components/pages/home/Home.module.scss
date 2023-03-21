@@ -72,7 +72,7 @@
 
                display: flex;
                flex-direction: column;
-               justify-content: space-around;
+               justify-content: space-between;
                align-items: center;
                gap: 25px;
 
@@ -85,14 +85,19 @@
                }
 
                p {
+                  text-align: left;
                   color: rgb(70, 70, 70);
                }
 
                > span {
+                  width: 100%;
+                  text-align: left;
                   color: rgb(110, 110, 110);
                }
 
-               h4 {
+               > h4 {
+                  justify-self: end;
+
                   font-size: 16px;
                   font-weight: normal;
 
@@ -102,7 +107,7 @@
                }
 
                button {
-                  width: 90%;
+                  width: 100%;
                   height: 46px;
 
                   border: 2px solid rgba(89, 160, 71, 0);
@@ -121,6 +126,11 @@
                      border: 2px solid rgba(89, 160, 71, 1);
                      color: rgb(89, 160, 71);
                   }
+               }
+
+               > div {
+                  font-weight: normal;
+                  color: rgb(89, 160, 71);
                }
             }
          }
@@ -166,7 +176,7 @@
 
                display: flex;
                flex-direction: column;
-               justify-content: space-around;
+               justify-content: center;
                align-items: center;
                gap: 25px;
 
@@ -175,11 +185,8 @@
                border: 2px solid rgb(89, 160, 71);
 
                h3 {
+                  font-weight: normal;
                   color: rgb(50, 50, 50);
-               }
-
-               p {
-                  color: rgb(70, 70, 70);
                }
 
                span {

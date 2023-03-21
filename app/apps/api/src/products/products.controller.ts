@@ -19,14 +19,13 @@ import { Auth } from '../auth/guard/jwt.guard';
 import { ProductsDto } from './products.dto';
 import { ProductsService } from './products.service';
 
-@Auth()
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get('/all')
-  getAll(@Query('searchTerm') searchTerm?: string | Types.ObjectId) {
-    return this.productsService.getAll(searchTerm);
+  getAll(@Query('term') term?: string ) {
+    return this.productsService.getAll(term);
   }
 
   @Get(':_id')
@@ -34,29 +33,22 @@ export class ProductsController {
     return this.productsService.getById(_id);
   }
 
+  @Auth()
   @Post('/add')
   addOne(@Body() dto: ProductsDto) {
     return this.productsService.addOne(dto);
   }
 
+  @Auth()
   @Put('/edit/:_id')
   @HttpCode(200)
   edit(@Param('_id') _id: Types.ObjectId, @Body() dto: ProductsDto) {
     return this.productsService.editOne(_id, dto);
   }
 
+  @Auth()
   @Put('/delete/:_id')
   delete(@Param('_id') _id: Types.ObjectId) {
     return this.productsService.deleteOne(_id);
-  }
-
-  @Put('/minus/:_id')
-  minus(@Param('_id') _id: Types.ObjectId) {
-    return this.productsService.minus(_id);
-  }
-
-  @Put('/plus/:_id')
-  plus(@Param('_id') _id: Types.ObjectId) {
-    return this.productsService.plus(_id);
   }
 }

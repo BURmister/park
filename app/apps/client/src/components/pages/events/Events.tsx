@@ -1,41 +1,22 @@
 import { FC, useEffect } from 'react';
+import useOutside from '../../../hooks/useOutside';
+
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { fetchProducts, getProducts } from '../../../redux/slices/products/products.slice';
+import Modal from '../../ui/modal-pay/Modal';
 
 import styles from './Events.module.scss';
 
-const events = [
-   {
-      id: '1',
-      name: 'Акция в поддержку всех политических заключенных!',
-      date: '23.04.2004',
-      free: true,
-      time: '11:23',
-      description:
-         'Приходите в Парк и участвуйте в самой масштабной акции за последнее время! Поддержите всех политзаключенных! Будет организован митинг, в павильоне 1 вы сможете поговорить с главными медийными личностями, в павильное 2 сможете написать письмо любому политическому деятелю, оказавшемся под стражей за свою позицию, в павильоне 3 будут выступать: Иван Жданов, Леонид Волков, Майкл Наки, Марк Фейгин, Павел Чиков и многие другие. Не пропустите!',
-   },
-   {
-      id: '2',
-      name: 'Концерт Нойза и Монеточки!',
-      date: '23.04.2004',
-      free: true,
-      time: '11:23',
-      description:
-         'Любите хорошую музыку? Приходите к нам на концерт Noize MC и Монеточки. Вас ждет целый час отличной музыки, интересные ивенты, общение с музыкантами и хорошее настроение на целый месяц!',
-   },
-   {
-      id: '3',
-      name: 'Концерт Нервы, Порнофильмы, Face и многие другие!',
-      date: '23.04.2004',
-      free: false,
-      time: '11:23',
-      description:
-         'Второй концерт на неделе! Везет нам! Выступают Нервы, Порнофильмы, Face, Рома Бахрома, Кис-Кис, Oxxxymiron, ДДТ, Ногу свело. Вас ждут незабываемые эмоции!',
-   },
-];
-
 const Events: FC = () => {
+   const products = useAppSelector(getProducts);
+   const dispatch = useAppDispatch();
+
+   const { ref, isShow, setIsShow } = useOutside(false);
+
    useEffect(() => {
       window.scrollTo(0, 0);
       document.title = 'События';
+      dispatch(fetchProducts());
    }, []);
 
    return (
@@ -43,8 +24,8 @@ const Events: FC = () => {
          <div className={styles.container}>
             <h1>События</h1>
             <section>
-               {events.length !== 0 ? (
-                  events.map((item, index) => (
+               {products.length !== 0 ? (
+                  products.map((item, index) => (
                      <div key={index}>
                         <h2>{item.name}</h2>
                         <p>{item.description}</p>
@@ -54,9 +35,24 @@ const Events: FC = () => {
                            Время: {item.time}
                         </span>
                         <h3>
-                           Посещение - <span>{ item.free ? 'Бесплатное' : 'Платное'}</span>
+                           Посещение - <span>{item.free ? 'Бесплатное' : 'Платное'}</span>
                         </h3>
-                        {item.free ? null : <button type="button">Купить билеты</button>}
+                        {item.free ? null : (
+                           <span ref={ref}>
+                              <button type="button" onClick={() => setIsShow(!isShow)}>
+                                 Купить билеты
+                              </button>
+                              <Modal
+                                 name={item.name}
+                                 date={item.date}
+                                 time={item.time}
+                                 price={item.price}
+                                 open={isShow}
+                                 onClickOpen={() => setIsShow(!isShow)}
+                                 ref={ref}
+                              />
+                           </span>
+                        )}
                      </div>
                   ))
                ) : (

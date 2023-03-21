@@ -18,7 +18,10 @@ export class ProductsModel extends TimeStamps {
   description: string;
 
   @prop()
-  free: boolean; 
+  free: boolean;
+
+  @prop()
+  price?: string;
 
   @prop()
   tickets: number;

@@ -19,7 +19,6 @@ import { Auth } from '../auth/guard/jwt.guard';
 import { TicketsDto } from './tickets.dto';
 import { TicketsService } from './tickets.service';
 
-@Auth()
 @Controller('tickets')
 export class TicketsController {
   constructor(private ticketsService: TicketsService) {}
@@ -48,15 +47,5 @@ export class TicketsController {
   @Put('/delete/:_id')
   delete(@Param('_id') _id: Types.ObjectId) {
     return this.ticketsService.deleteOne(_id);
-  }
-
-  @Put('/minus/:_id')
-  minus(@Param('_id') _id: Types.ObjectId) {
-    return this.ticketsService.minus(_id);
-  }
-
-  @Put('/plus/:_id')
-  plus(@Param('_id') _id: Types.ObjectId) {
-    return this.ticketsService.plus(_id);
   }
 }

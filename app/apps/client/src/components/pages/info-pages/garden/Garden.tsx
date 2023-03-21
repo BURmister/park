@@ -6,6 +6,8 @@ import Modal from '../../../ui/modal-pay/Modal';
 
 import styles from './Garden.module.scss';
 
+const GARDEN_EXCURSION_PRICE = '350'
+
 const Garden: FC = () => {
    useEffect(() => {
       window.scrollTo(0, 0);
@@ -31,14 +33,22 @@ const Garden: FC = () => {
                <span>
                   Продолжительность: 1 час
                   <br />
-                  Стоимость: 350 ₽
+                  Стоимость: {GARDEN_EXCURSION_PRICE} ₽
                </span>
                <div ref={ref}>
                   <button type="button" onClick={() => setIsShow(!isShow)}>
                      Купить билет
                   </button>
-                  <Modal name={'Концерт Нервы в нашем Парке'} open={isShow} onClickOpen={() => setIsShow(!isShow)} ref={ref} />
-               </div>{' '}
+                  <Modal
+                     name={'Экскурсия по Ботаническому саду'}
+                     date={false}
+                     time={false}
+                     price={GARDEN_EXCURSION_PRICE}
+                     open={isShow}
+                     onClickOpen={() => setIsShow(!isShow)}
+                     ref={ref}
+                  />
+               </div>
             </section>
          </div>
       </>
