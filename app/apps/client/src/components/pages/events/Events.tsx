@@ -1,7 +1,9 @@
 import { FC, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import useOutside from '../../../hooks/useOutside';
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { isLoggedIn } from '../../../redux/slices/auth/auth.slice';
 import { fetchProducts, getProducts } from '../../../redux/slices/products/products.slice';
 import Modal from '../../ui/modal-pay/Modal';
 
@@ -13,7 +15,12 @@ const Events: FC = () => {
 
    const { ref, isShow, setIsShow } = useOutside(false);
 
+   const isUser = useAppSelector(isLoggedIn);
+
+
    useEffect(() => {
+
+
       window.scrollTo(0, 0);
       document.title = 'События';
       dispatch(fetchProducts());
@@ -24,6 +31,7 @@ const Events: FC = () => {
          <div className={styles.container}>
             <h1>События</h1>
             <section>
+               {isUser ? <Link to="/events/add">+</Link> : null}
                {products.length !== 0 ? (
                   products.map((item, index) => (
                      <div key={index}>

@@ -1,19 +1,25 @@
 import { FC, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
-import { isLoggedIn } from '../../../redux/slices/auth/auth.slice';
-import { fetchNews, getNews } from '../../../redux/slices/news/news';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux';
+import { isLoggedIn } from '../../../../redux/slices/auth/auth.slice';
+import { fetchNews, getNews } from '../../../../redux/slices/news/news';
 
 import styles from './News.module.scss';
 
-const News: FC = () => {
+const AddNews: FC = () => {
    const news = useAppSelector(getNews);
    const dispatch = useAppDispatch();
 
    const isUser = useAppSelector(isLoggedIn);
 
+   const navigate = useNavigate();
+
    useEffect(() => {
+      if (!isUser) {
+         alert('You are not authenticated');
+         return navigate('/');
+      }
       window.scrollTo(0, 0);
       document.title = 'Новости';
       dispatch(fetchNews());
@@ -22,9 +28,8 @@ const News: FC = () => {
    return (
       <>
          <div className={styles.container}>
-            <h1>Новости</h1>
+            <h1>Добавить новость</h1>
             <section>
-               {isUser ? <Link to="/news/add">+</Link> : null}
 
                {news.length !== 0 ? (
                   news.map((item, index) => (
@@ -48,4 +53,4 @@ const News: FC = () => {
    );
 };
 
-export default News;
+export default AddNews;

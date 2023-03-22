@@ -17,6 +17,8 @@ import Events from './components/pages/events/Events';
 import Pay from './components/pages/info-pages/pay/Pay';
 import Garden from './components/pages/info-pages/garden/Garden';
 import Excursions from './components/pages/info-pages/excursions/Excursions';
+import AddEvents from './components/pages/admin/events/Events';
+import AddNews from './components/pages/admin/news/News';
 
 import './App.css';
 
@@ -33,30 +35,18 @@ function App() {
       }
    }, []);
 
-   //TODO remove that if
    if (token === undefined) {
       token = '';
    }
-
-   // if (!isUser) {
-   //    return (
-   //       <div className="App">
-   //          <Header isLogin={false} />
-   //          <main>
-   //             <Login />
-   //          </main>
-   //          <Footer />
-   //       </div>
-   //    );
-   // }
 
    // if (token !== undefined) {
    return (
       <AppContext.Provider value={{ token }}>
          <div className="App">
-            <Header isLogin={true} />
+            <Header />
             <main>
                <Routes>
+                  <Route path="/login" element={<Login />} />
                   <Route path="/" element={<Home />} />
                   <Route path="/events" element={<Events />} />
                   <Route path="/news" element={<News />} />
@@ -66,6 +56,8 @@ function App() {
                   <Route path="/info/garden" element={<Garden />} />
                   <Route path="/info/excursions" element={<Excursions />} />
                   <Route path="*" element={<h1 style={{ textAlign: 'center', paddingTop: '100px', color: 'black' }}>Страница не найдена</h1>} />
+                  <Route path="/events/add" element={<AddEvents />} />
+                  <Route path="/news/add" element={<AddNews />} />
                </Routes>
             </main>
             <Footer />

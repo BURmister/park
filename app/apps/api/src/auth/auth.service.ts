@@ -26,10 +26,7 @@ export class AuthService {
       const hash = await argon.hash(dto.password);
       const newUser = new this.UserModel({
         name: dto.name,
-        hash: hash,
-        role: dto.role,
-        firstName: dto.firstName,
-        secondName: dto.secondName,
+        hash: hash
       });
       const user = await newUser.save();
       return user._id;
