@@ -1,19 +1,28 @@
-import { FC, useState, useRef } from 'react';
-import { useAppDispatch } from '../../../hooks/useRedux';
-import { login as loginUser } from '../../../redux/slices/auth/auth.slice';
+import { FC, useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { isLoggedIn, login as loginUser } from '../../../redux/slices/auth/auth.slice';
 
 import styles from './Login.module.scss';
 
 const Login: FC = () => {
+   const isUser = useAppSelector(isLoggedIn);
+
    const [login, setLogin] = useState<string>('');
    const [password, setPassword] = useState<string>('');
 
    const passwordRef = useRef<HTMLInputElement>(null);
    const dispatch = useAppDispatch();
 
+   const navigate = useNavigate()
+
    const onEnter = () => {
       dispatch(loginUser({ name: login, password }));
    };
+
+   useEffect(() => {
+      isUser && navigate('/')
+   }, [isUser])
 
    return (
       <div className={styles.wrapper}>

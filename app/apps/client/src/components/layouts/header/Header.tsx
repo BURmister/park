@@ -2,8 +2,8 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useLocate } from '../../../hooks/useLocate';
-import { useAppDispatch } from '../../../hooks/useRedux';
-import { logout } from '../../../redux/slices/auth/auth.slice';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { isLoggedIn, logout } from '../../../redux/slices/auth/auth.slice';
 
 import styles from './Header.module.scss';
 import logo from '../../../assets/cloud.svg';
@@ -16,8 +16,9 @@ const pages = [
    { id: '/about', value: 'О Парке' },
 ];
 
-const Header: FC<{ isLogin: boolean }> = ({ isLogin }) => {
+const Header: FC = () => {
    const locate = useLocate();
+   const isUser = useAppSelector(isLoggedIn);
    const dispatch = useAppDispatch();
 
    let found = pages.find((item) => item.id.toLowerCase() === locate.pathname.toLowerCase());
@@ -44,15 +45,11 @@ const Header: FC<{ isLogin: boolean }> = ({ isLogin }) => {
                   ))}
                </ul>
             </nav>
-            {isLogin ? (
+            {isUser ? (
                <button type="button" onClick={() => dispatch(logout())}>
                   <span>Bыйти</span>
                </button>
-            ) : (
-               <button type="button">
-                  <span>Войти</span>
-               </button>
-            )}
+            ) : null}
          </div>
       </header>
    );
