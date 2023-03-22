@@ -8,6 +8,8 @@ import { fetchProducts, getProducts } from '../../../redux/slices/products/produ
 import Modal from '../../ui/modal-pay/Modal';
 
 import styles from './Events.module.scss';
+import close from '../../../assets/close.svg';
+import edit from '../../../assets/edit.svg';
 
 const Events: FC = () => {
    const products = useAppSelector(getProducts);
@@ -17,10 +19,7 @@ const Events: FC = () => {
 
    const isUser = useAppSelector(isLoggedIn);
 
-
    useEffect(() => {
-
-
       window.scrollTo(0, 0);
       document.title = 'События';
       dispatch(fetchProducts());
@@ -35,6 +34,14 @@ const Events: FC = () => {
                {products.length !== 0 ? (
                   products.map((item, index) => (
                      <div key={index}>
+                        <div>
+                           <Link to={`/events/change/${item._id}`}>
+                              <img src={edit} />
+                           </Link>
+                           <button type="button">
+                              <img src={close} />
+                           </button>
+                        </div>
                         <h2>{item.name}</h2>
                         <p>{item.description}</p>
                         <span>

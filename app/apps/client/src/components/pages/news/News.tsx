@@ -6,6 +6,8 @@ import { isLoggedIn } from '../../../redux/slices/auth/auth.slice';
 import { fetchNews, getNews } from '../../../redux/slices/news/news';
 
 import styles from './News.module.scss';
+import close from '../../../assets/close.svg'
+import edit from '../../../assets/edit.svg'
 
 const News: FC = () => {
    const news = useAppSelector(getNews);
@@ -29,6 +31,14 @@ const News: FC = () => {
                {news.length !== 0 ? (
                   news.map((item, index) => (
                      <div key={index}>
+                        <div>
+                           <Link to={`/news/change/${item._id}`}>
+                              <img src={edit}/>
+                           </Link>
+                           <button type="button">
+                              <img src={close}/>
+                           </button>
+                        </div>
                         <h2>{item.name}</h2>
                         <p>{item.description}</p>
                         <span>{item.date}</span>

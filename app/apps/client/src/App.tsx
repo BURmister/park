@@ -17,8 +17,10 @@ import Events from './components/pages/events/Events';
 import Pay from './components/pages/info-pages/pay/Pay';
 import Garden from './components/pages/info-pages/garden/Garden';
 import Excursions from './components/pages/info-pages/excursions/Excursions';
-import AddEvents from './components/pages/admin/events/Events';
-import AddNews from './components/pages/admin/news/News';
+import AddEvents from './components/pages/admin/events/add/EventsAdd';
+import AddNews from './components/pages/admin/news/add/NewsAdd';
+import EventsEdit from './components/pages/admin/events/edit/EventsEdit';
+import NewsEdit from './components/pages/admin/news/edit/NewsEdit';
 
 import './App.css';
 
@@ -53,11 +55,17 @@ function App() {
                   <Route path="/history" element={<History />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/info/pay" element={<Pay />} />
+                  {isUser ? (
+                     <>
+                        <Route path="/events/add" element={<AddEvents />} />
+                        <Route path="/news/add" element={<AddNews />} />
+                        <Route path="/events/change/:id" element={<EventsEdit />} />
+                        <Route path="/news/change/:id" element={<NewsEdit />} />
+                     </>
+                  ) : null}
                   <Route path="/info/garden" element={<Garden />} />
                   <Route path="/info/excursions" element={<Excursions />} />
                   <Route path="*" element={<h1 style={{ textAlign: 'center', paddingTop: '100px', color: 'black' }}>Страница не найдена</h1>} />
-                  <Route path="/events/add" element={<AddEvents />} />
-                  <Route path="/news/add" element={<AddNews />} />
                </Routes>
             </main>
             <Footer />
