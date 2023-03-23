@@ -6,13 +6,12 @@ type editProduct = {
    id: string;
    object: {
       name: string;
-      price: string;
+      date: string;
+      time: string;
       description: string;
-      gender: 'Мужской' | 'Женский';
-      category: string;
-      producer: string;
-      size: string;
-      amount: number;
+      free: 'Бесплатное' | 'Платное';
+      price: string;
+      tickets: number;
    };
    token: string;
 };

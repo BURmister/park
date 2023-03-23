@@ -5,10 +5,15 @@ import productsReducer from './slices/products/products.slice';
 import oneProductReducer from './slices/products/oneProduct.slice';
 import deleteProductReducer from './slices/products/deleteProduct.slice';
 import addProductReducer from './slices/products/addProduct.slice';
-import amountProductReducer from './slices/products/amountProduct.slice';
 import editProductReducer from './slices/products/editProduct.slice'
 
 import newsReducer from './slices/news/news'
+import oneNewsReducer from './slices/news/oneNews'
+import editNewsReducer from './slices/news/editNews'
+import deleteNewsReducer from './slices/news/deleteNews'
+import addNewsReducer from './slices/news/addNews'
+
+import addTicketsReducer from './slices/tickets/tickets';
 
 import authReducer from './slices/auth/auth.slice';
 
@@ -25,10 +30,15 @@ export const store = configureStore({
       oneProduct: oneProductReducer,
       deleteProduct: deleteProductReducer,
       addProduct: addProductReducer,
-      amountProduct: amountProductReducer,
       editProduct: editProductReducer,
 
       news: newsReducer,
+      oneNews: oneNewsReducer,
+      editNews: editNewsReducer,
+      deleteNews: deleteNewsReducer,
+      addNews: addNewsReducer,
+
+      addTickets: addTicketsReducer,
       
       users: usersReducer,
       oneUser: oneUserReducer,

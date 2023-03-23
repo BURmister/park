@@ -6,7 +6,7 @@ import Modal from '../../../ui/modal-pay/Modal';
 
 import styles from './Garden.module.scss';
 
-const GARDEN_EXCURSION_PRICE = '350'
+const GARDEN_EXCURSION_PRICE = '350';
 
 const Garden: FC = () => {
    useEffect(() => {
@@ -40,6 +40,7 @@ const Garden: FC = () => {
                      Купить билет
                   </button>
                   <Modal
+                     _id={'Экскурсия по Ботаническому саду'}
                      name={'Экскурсия по Ботаническому саду'}
                      date={false}
                      time={false}

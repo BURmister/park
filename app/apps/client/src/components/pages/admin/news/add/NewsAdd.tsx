@@ -1,11 +1,17 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
+import AppContext from '../../../../../hooks/Context';
 
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/useRedux';
+import { addedNews, addedNewsStatus, addNews, updateAddStatus } from '../../../../../redux/slices/news/addNews';
 
 import styles from './NewsAdd.module.scss';
 
 const AddNews: FC = () => {
    const dispatch = useAppDispatch();
+   const added = useAppSelector(addedNews);
+   const status = useAppSelector(addedNewsStatus);
+
+   const { token } = useContext(AppContext);
 
    const [name, setName] = useState<string>('');
    const [description, setDescription] = useState<string>('');
@@ -15,6 +21,25 @@ const AddNews: FC = () => {
       window.scrollTo(0, 0);
       document.title = 'Новости';
    }, []);
+
+   const onSubmit = () => {
+      if (name !== '' && description !== '' && date !== '') {
+         const localeDate = date.slice(8) + date.slice(4, 8) + date.slice(0, 4)
+         dispatch(addNews({ object: { name, description, date: localeDate.replaceAll('-', '.') }, token }));
+      } else {
+         alert('Все поля должны быть заполнены');
+      }
+   };
+
+   useEffect(() => {
+      if (status === 'success') {
+         alert(`Новость добавлена \nКод: ${added}`);
+         dispatch(updateAddStatus('loading'));
+      } else if (status === 'error') {
+         alert('Что-то пошло не так. Попробуйте позже');
+         dispatch(updateAddStatus('loading'));
+      }
+   }, [status]);
 
    return (
       <>
@@ -33,7 +58,9 @@ const AddNews: FC = () => {
                   <label htmlFor="date">Дата</label>
                   <input value={date} onChange={(event) => setDate(event.target.value)} type="date" id="date" name="date" />
                </span>
-               <button type="button">Добавить</button>
+               <button type="button" onClick={() => onSubmit()}>
+                  Добавить
+               </button>
             </form>
          </div>
       </>

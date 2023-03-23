@@ -27,5 +27,9 @@ export class TicketsDto {
 
   @IsString()
   @IsOptional()
-  amount: number;
+  buyerEmail: string;
+
+  @IsString()
+  @IsOptional()
+  amount: string;
 }

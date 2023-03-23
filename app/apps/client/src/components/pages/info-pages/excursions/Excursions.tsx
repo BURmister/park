@@ -35,6 +35,7 @@ const Excursions: FC = () => {
                      Купить билет
                   </button>
                   <Modal
+                     _id={'Пешия экскурсия по Парку'}
                      name={'Пешия экскурсия по Парку'}
                      date={false}
                      time={false}

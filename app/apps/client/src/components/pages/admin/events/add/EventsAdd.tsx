@@ -1,24 +1,55 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
+import AppContext from '../../../../../hooks/Context';
 
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/useRedux';
+import { addedProduct, addedStatus, addProduct, updateAddStatus } from '../../../../../redux/slices/products/addProduct.slice';
 
 import styles from './EventsAdd.module.scss';
 
 const AddEvents: FC = () => {
    const dispatch = useAppDispatch();
+   const added = useAppSelector(addedProduct);
+   const status = useAppSelector(addedStatus);
+   const { token } = useContext(AppContext);
 
    const [name, setName] = useState<string>('');
    const [description, setDescription] = useState<string>('');
    const [date, setDate] = useState<string>('');
    const [time, setTime] = useState<string>('');
-   const [free, setFree] = useState<string>('');
-   const [price, setPrice] = useState<string>('');
-   const [tickets, setTickets] = useState<string>('');
+   const [free, setFree] = useState<string>('Бесплатное');
+   const [price, setPrice] = useState<string>('0');
+   const [tickets, setTickets] = useState<string>('0');
 
    useEffect(() => {
       window.scrollTo(0, 0);
       document.title = 'События';
    }, []);
+
+   const onSubmit = async () => {
+      if (name !== '' && description !== '' && date !== '' && date !== '' && time !== '' && price !== '' && tickets !== '') {
+         const ticketsAmount = Number(tickets);
+         const forFree = free === 'Бесплатное' ? free : 'Платное';
+         const localeDate = date.slice(8) + date.slice(4, 8) + date.slice(0, 4);
+         dispatch(
+            addProduct({
+               object: { name, description, date: localeDate.replaceAll('-', '.'), time, free: forFree, price, tickets: ticketsAmount },
+               token,
+            }),
+         );
+      } else {
+         alert('Все поля должны быть заполнены');
+      }
+   };
+
+   useEffect(() => {
+      if (status === 'success') {
+         alert(`Событие добавлено \nКод: ${added}`);
+         dispatch(updateAddStatus('loading'));
+      } else if (status === 'error') {
+         alert('Что-то пошло не так. Попробуйте позже');
+         dispatch(updateAddStatus('loading'));
+      }
+   }, [status]);
 
    return (
       <>
@@ -43,27 +74,22 @@ const AddEvents: FC = () => {
                </span>
                <span>
                   <label htmlFor="free">Посещение</label>
-                  <select
-                     name="free"
-                     id="free"
-                     defaultValue={'Бесплатное'}
-                     value={free}
-                     onChange={(event) => setFree(event.target.value)}
-                     placeholder="Тип "
-                     required>
+                  <select name="free" id="free" value={free} onChange={(event) => setFree(event.target.value)} placeholder="Тип " required>
                      <option value="Бесплатное">Бесплатное</option>
                      <option value="Платное">Платное</option>
                   </select>
                </span>
                <span>
                   <label htmlFor="price">Цена</label>
-                  <input value={price} onChange={(event) => setPrice(event.target.value)} type="number" id="price" name="price" />
+                  <input value={price} onChange={(event) => setPrice(event.target.value)} min="0" type="number" id="price" name="price" />
                </span>
                <span>
                   <label htmlFor="tickets">Количество билетов</label>
-                  <input value={tickets} onChange={(event) => setTickets(event.target.value)} type="number" id="tickets" name="tickets" />
+                  <input value={tickets} onChange={(event) => setTickets(event.target.value)} min="0" type="number" id="tickets" name="tickets" />
                </span>
-               <button type="button">Добавить</button>
+               <button type="button" onClick={() => onSubmit()}>
+                  Добавить
+               </button>
             </form>
          </div>
       </>

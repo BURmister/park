@@ -4,7 +4,7 @@ export type product = {
    date: string;
    time: string;
    description: string;
-   free: boolean;
+   free: 'Бесплатное' | 'Платное';
    price: string;
    tickets: number;
 };

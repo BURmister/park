@@ -2,8 +2,11 @@ import { FC, useState, useEffect, useRef } from 'react';
 
 import styles from './Modal.module.scss';
 import close from '../../../assets/close.svg';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { addedStatus, addedTickets, addTickets, updateAddStatus } from '../../../redux/slices/tickets/tickets';
 
 type props = {
+   _id: string;
    name: string;
    date: string | false;
    time: string | false;
@@ -14,11 +17,15 @@ type props = {
    ref: any;
 };
 
-const Modal: FC<props> = ({ ref, open, onClickOpen, name, date, time, price }) => {
+const Modal: FC<props> = ({ ref, _id, open, onClickOpen, name, date, time, price }) => {
+   const dispatch = useAppDispatch();
+   const added = useAppSelector(addedTickets);
+   const status = useAppSelector(addedStatus);
+
    const [buyerName, setBuyerName] = useState<string>('');
    const [buyerTel, setBuyerTel] = useState<string>('');
    const [buyerEmail, setBuyerEmail] = useState<string>('');
-   const [selectedTime, setSelectedTime] = useState<string>('');
+   const [selectedTime, setSelectedTime] = useState<string>('12:00 первый_сеанс');
    const [counter, setCounter] = useState<number>(1);
    const [selectedDate, setSelectedDate] = useState<string>('');
 
@@ -39,6 +46,43 @@ const Modal: FC<props> = ({ ref, open, onClickOpen, name, date, time, price }) =
    //    we need get MoscowDate, not GlobalDate, {timezone: Msc} and convert to ISO-String
    //    How? I don't know
    // }
+
+   const onSubmit = async () => {
+      if (name !== '' && selectedDate !== '' && selectedDate !== '' && time !== '' && price !== '' && counter !== 0) {
+         let localeDate = ''
+
+         if (!date) {
+            localeDate = selectedDate.slice(8) + selectedDate.slice(4, 8) + selectedDate.slice(0, 4);
+         } else {
+            localeDate = date
+         }
+         const amount = String(counter);
+         dispatch(
+            addTickets({
+               eventId: _id,
+               name,
+               date: localeDate.replaceAll('-', '.'),
+               time: selectedTime,
+               buyerName,
+               buyerTel,
+               buyerEmail,
+               amount,
+            }),
+         );
+      } else {
+         alert('Все поля должны быть заполнены');
+      }
+   };
+
+   useEffect(() => {
+      if (status === 'success') {
+         alert(`Успешно оформлено \nКод ваших билетов: ${added}`);
+         dispatch(updateAddStatus('loading'));
+      } else if (status === 'error') {
+         alert('Что-то пошло не так. Попробуйте позже');
+         dispatch(updateAddStatus('loading'));
+      }
+   }, [status]);
 
    useEffect(() => {
       date !== false && setSelectedDate(date);
@@ -122,7 +166,9 @@ const Modal: FC<props> = ({ ref, open, onClickOpen, name, date, time, price }) =
                <h4>
                   Цена: <span>{Number(price) * counter}</span>₽
                </h4>
-               <button>Оформить</button>
+               <button type="button" onClick={() => onSubmit()}>
+                  Оформить
+               </button>
             </form>
          </div>
       </div>

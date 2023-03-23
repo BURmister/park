@@ -1,58 +1,60 @@
 import { urlAPI } from '../../../api/api.constants';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../store';
-import { product } from '../../types/product.types';
 
-type addProduct = {
-   object: {
-      name: string;
-      price: string;
-      description: string;
-      gender: 'Мужской' | 'Женский';
-      category: string;
-      producer: string;
-      size: string;
-      amount: number;
-   };
-   token: string;
+type addTickets = {
+   eventId: string;
+   name: string;
+   date: string;
+   time: string;
+   buyerName: string;
+   buyerTel: string;
+   amount: string;
+   buyerEmail: string;
 };
 
-export const addProduct = createAsyncThunk('addProduct', async (args: addProduct) => {
-   const { data } = await axios.post(`/api/products/add`, { ...args.object }, { headers: { Authorization: 'Bearer ' + args.token } });
+export const addTickets = createAsyncThunk('addTickets', async (args: addTickets) => {
+   const { data } = await axios.post(`/api/tickets/add`, { ...args });
    return data;
 });
 
-interface IAddProduct {
+interface IAddTickets {
    id: string | null;
-   status: 'loading' | 'success' | 'error';
+   addTicketsStatus: 'loading' | 'success' | 'error';
 }
 
-const initialState: IAddProduct = {
+const initialState: IAddTickets = {
    id: null,
-   status: 'loading', // loading | success | error
+   addTicketsStatus: 'loading', // loading | success | error
 };
 
-export const addProductSlice = createSlice({
-   name: 'addProduct',
+export const addTicketsSlice = createSlice({
+   name: 'addTickets',
    initialState,
-   reducers: {},
+   reducers: {
+      updateAddStatus: (state, action: PayloadAction<'loading' | 'success' | 'error'>) => {
+         state.addTicketsStatus = action.payload;
+      },
+   },
    extraReducers: (builder) => {
-      builder.addCase(addProduct.pending, (state) => {
-         state.status = 'loading';
+      builder.addCase(addTickets.pending, (state) => {
+         state.addTicketsStatus = 'loading';
       });
-      builder.addCase(addProduct.fulfilled, (state, action) => {
+      builder.addCase(addTickets.fulfilled, (state, action) => {
          state.id = action.payload;
-         state.status = 'success';
+         state.addTicketsStatus = 'success';
       });
-      builder.addCase(addProduct.rejected, (state) => {
-         state.status = 'error';
+      builder.addCase(addTickets.rejected, (state) => {
+         state.addTicketsStatus = 'error';
          state.id = null;
       });
    },
 });
 
-export const addedProduct = (state: RootState) => state.addProduct.id;
-export const addedStatus = (state: RootState) => state.addProduct.status;
+export const addedTickets = (state: RootState) => state.addTickets.id;
+export const addedStatus = (state: RootState) => state.addTickets.addTicketsStatus;
 
-export default addProductSlice.reducer;
+export const { updateAddStatus } = addTicketsSlice.actions;
+
+export default addTicketsSlice.reducer;

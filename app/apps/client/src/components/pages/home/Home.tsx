@@ -51,12 +51,13 @@ const Home: FC = () => {
                            <br />
                            Время: {item.time}
                         </span>
-                        {item.free ? null : (
+                        {item.free === 'Бесплатное' ? null : (
                            <span ref={ref}>
                               <button type="button" onClick={() => setIsShow(!isShow)}>
                                  Билеты
                               </button>
                               <Modal
+                                 _id={item._id}
                                  name={item.name}
                                  date={item.date}
                                  time={item.time}
@@ -68,7 +69,7 @@ const Home: FC = () => {
                            </span>
                         )}
                         <h4>
-                           Посещение - <span>{item.free ? 'Бесплатное' : 'Платное'}</span>
+                           Посещение - <span>{item.free === 'Бесплатное' ? 'Бесплатное' : 'Платное'}</span>
                         </h4>
                      </li>
                   ))

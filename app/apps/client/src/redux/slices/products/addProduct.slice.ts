@@ -1,5 +1,5 @@
 import { urlAPI } from '../../../api/api.constants';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../store';
 import { product } from '../../types/product.types';
@@ -7,13 +7,12 @@ import { product } from '../../types/product.types';
 type addProduct = {
    object: {
       name: string;
-      price: string;
+      date: string;
+      time: string;
       description: string;
-      gender: 'Мужской' | 'Женский';
-      category: string;
-      producer: string;
-      size: string;
-      amount: number;
+      free: 'Бесплатное' | 'Платное';
+      price: string;
+      tickets: number;
    };
    token: string;
 };
@@ -29,34 +28,40 @@ export const addProduct = createAsyncThunk('addProduct', async (args: addProduct
 
 interface IAddProduct {
    id: string | null;
-   status: 'loading' | 'success' | 'error';
+   addProductStatus: 'loading' | 'success' | 'error';
 }
 
 const initialState: IAddProduct = {
    id: null,
-   status: 'loading', // loading | success | error
+   addProductStatus: 'loading', // loading | success | error
 };
 
 export const addProductSlice = createSlice({
    name: 'addProduct',
    initialState,
-   reducers: {},
+   reducers: {
+      updateAddStatus: (state, action: PayloadAction<'loading' | 'success' | 'error'>) => {
+         state.addProductStatus = action.payload;
+      },
+   },
    extraReducers: (builder) => {
       builder.addCase(addProduct.pending, (state) => {
-         state.status = 'loading';
+         state.addProductStatus = 'loading';
       });
       builder.addCase(addProduct.fulfilled, (state, action) => {
          state.id = action.payload;
-         state.status = 'success';
+         state.addProductStatus = 'success';
       });
       builder.addCase(addProduct.rejected, (state) => {
-         state.status = 'error';
+         state.addProductStatus = 'error';
          state.id = null;
       });
    },
 });
 
 export const addedProduct = (state: RootState) => state.addProduct.id;
-export const addedStatus = (state: RootState) => state.addProduct.status;
+export const addedStatus = (state: RootState) => state.addProduct.addProductStatus;
+
+export const { updateAddStatus } = addProductSlice.actions;
 
 export default addProductSlice.reducer;
